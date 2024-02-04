@@ -1,11 +1,11 @@
-import { createClient } from "@/src/utils/superbase/server";
+import { createClient } from "../../../utils/superbase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function LoginForm({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams?: { message: string | undefined };
 }) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
@@ -21,7 +21,6 @@ export default async function LoginForm({
     const password = formData.get("password") as string;
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
-    console.log(user);
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -29,7 +28,7 @@ export default async function LoginForm({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/?message=Credenciais invalidas");
     }
 
     return redirect("/admin");
@@ -53,7 +52,7 @@ export default async function LoginForm({
         id="senha"
         className="rounded-md px-4 py-2 bg-inherit border mb-6"
         name="email"
-        placeholder="you@example.com"
+        placeholder="Seu email"
         required
       />
       <label className="text-md" htmlFor="password">
@@ -70,7 +69,7 @@ export default async function LoginForm({
         Logar
       </button>
       {searchParams?.message && (
-        <p className="mt-4 p-3 text-sm bg-foreground/10 text-foreground text-center rounded-md">
+        <p className="mt-4 p-3 text-sm bg-foreground/10 text-red-600 text-center rounded-md">
           {searchParams.message}
         </p>
       )}
