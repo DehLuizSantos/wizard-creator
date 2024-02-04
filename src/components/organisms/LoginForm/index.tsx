@@ -14,6 +14,8 @@ export default async function LoginForm({
     data: { user },
   } = await supabase.auth.getUser();
 
+  console.log(searchParams);
+
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -21,7 +23,6 @@ export default async function LoginForm({
     const password = formData.get("password") as string;
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
-    console.log(user);
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -29,7 +30,7 @@ export default async function LoginForm({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/?message=Credenciais invalidas");
     }
 
     return redirect("/admin");
@@ -70,7 +71,7 @@ export default async function LoginForm({
         Logar
       </button>
       {searchParams?.message && (
-        <p className="mt-4 p-3 text-sm bg-foreground/10 text-foreground text-center rounded-md">
+        <p className="mt-4 p-3 text-sm bg-foreground/10 text-red-600 text-center rounded-md">
           {searchParams.message}
         </p>
       )}

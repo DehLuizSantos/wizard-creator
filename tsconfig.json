@@ -13,21 +13,22 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
+        "paths": {
+            "@/*": ["./*"]
+          },
         "plugins": [
             {
                 "name": "next",
             },
         ],
-        "paths": {
-            "@/*": ["./*"]
-          }
+       
     },
     "include": [
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts",
-        "src/app/index.test.tsx",
+        "src/app/index.test.tsx", "jest.setup.js",
     ],
     "exclude": ["node_modules"],
 }
